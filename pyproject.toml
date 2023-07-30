@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mixport"
+version = "0.0.1"
+description = "CLI tool for exporting Mixxx recordings"
+requires-python = ">=3.9"
+dependencies = [
+  "ffmpeg-python >= 0.2, < 1.0",
+  "requests >= 2.28, < 3",
+  "tracklist >= 0.0, < 1",
+]
+
+[project.scripts]
+mixport = "mixport:main"
+
+[tool.setuptools.packages]
+find = {}
+
+[tool.pyright]
+include = ["mixport"]
