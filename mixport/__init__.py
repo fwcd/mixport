@@ -19,6 +19,9 @@ def main():
     parser = argparse.ArgumentParser(description='CLI tool for transcoding Mixxx recordings')
     parser.add_argument('-o', '--output', required=True, type=Path, help='The output directory.')
     parser.add_argument('-f', '--format', default='opus', help='The file extension of the output format. Has to be a format that ffmpeg supports.')
+    parser.add_argument('--trim-duration', type=float, default=None, help='Trims to the given duration in seconds.')
+    parser.add_argument('--fade-in', type=float, default=None, help='Adds the given fade-in in seconds.')
+    parser.add_argument('--fade-out', type=float, default=None, help='Adds the given fade-out in seconds.')
     parser.add_argument('input', type=Path, nargs=argparse.OPTIONAL, help='The input cue file. Defaults to the latest Mixxx recording.')
 
     args = parser.parse_args()
@@ -26,6 +29,9 @@ def main():
     in_cue_path = args.input or find_latest_recording()
     out_dir = args.output
     format = args.format
+    trim_duration = args.trim_duration
+    fade_in = args.fade_in
+    fade_out = args.fade_out
 
     if not in_cue_path:
         print(f'No recording (.cue file) found in recordings: {RECORDINGS_PATH}')
@@ -61,5 +67,8 @@ def main():
     print(f'==> Transcoding to {out_audio_path}')
     transcode(
         in_audio_path=in_audio_path,
-        out_audio_path=out_audio_path
+        out_audio_path=out_audio_path,
+        trim_duration=trim_duration,
+        fade_in=fade_in,
+        fade_out=fade_out,
     )
