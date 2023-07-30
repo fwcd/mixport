@@ -1,7 +1,7 @@
 import argparse
-import shutil
 import sys
 
+from dataclasses import replace
 from pathlib import Path
 from typing import Optional
 from tracklist.format.cuesheet import CuesheetFormat
@@ -9,6 +9,7 @@ from tracklist.format.cuesheet import CuesheetFormat
 from mixport.transcode import transcode
 
 RECORDINGS_PATH = Path.home() / 'Music' / 'Mixxx' / 'Recordings'
+CUESHEET_FORMAT = CuesheetFormat()
 
 def find_latest_recording() -> Optional[Path]:
     '''Fetches the path to the latest recording's .cue file.'''
@@ -32,13 +33,13 @@ def main():
 
     print(f'==> Parsing {in_cue_path}')
     with open(in_cue_path, 'r') as f:
-        tracklist = CuesheetFormat().parse(f.read())
+        in_tracklist = CUESHEET_FORMAT.parse(f.read())
 
-    if not tracklist.file:
+    if not in_tracklist.file:
         print(f'No audio file referenced in {in_cue_path}!')
         sys.exit(1)
     
-    in_audio_path = RECORDINGS_PATH / tracklist.file
+    in_audio_path = RECORDINGS_PATH / in_tracklist.file
 
     print(f'==> Checking {in_audio_path}')
     if not in_audio_path.exists():
@@ -51,8 +52,11 @@ def main():
     print(f'==> Creating {out_dir} if needed')
     out_dir.mkdir(parents=True, exist_ok=True)
 
+    out_tracklist = replace(in_tracklist, file=out_audio_path.name)
+
     print(f'==> Copying to {out_cue_path}')
-    shutil.copy(in_cue_path, out_cue_path)
+    with open(out_cue_path, 'w') as f:
+        f.write(CUESHEET_FORMAT.format(out_tracklist))
 
     print(f'==> Transcoding to {out_audio_path}')
     transcode(
