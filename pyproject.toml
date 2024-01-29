@@ -9,7 +9,6 @@ description = "CLI tool for transcoding Mixxx recordings"
 requires-python = ">=3.9"
 dependencies = [
   "ffmpeg-python >= 0.2, < 1.0",
-  "requests >= 2.28, < 3",
   "tracklist >= 0.0, < 1",
 ]
 
