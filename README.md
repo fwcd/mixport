@@ -1,5 +1,6 @@
 # Mixport
 
+[![PyPI](https://img.shields.io/pypi/v/mixport)](https://pypi.org/project/mixport)
 [![Typecheck](https://github.com/fwcd/mixport/actions/workflows/typecheck.yml/badge.svg)](https://github.com/fwcd/mixport/actions/workflows/typecheck.yml)
 
 CLI tool for transcoding Mixxx recordings.
