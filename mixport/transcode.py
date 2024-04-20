@@ -34,6 +34,7 @@ def transcode(
 
     if trim_duration:
         builder = builder.filter('atrim', duration=trim_duration)
+        duration = trim_duration
     if fade_in:
         builder = builder.filter('afade', type='in', duration=fade_in)
     if fade_out:
